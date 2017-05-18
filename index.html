@@ -48,6 +48,66 @@
 </head>
 
 <body>
+<script>
+  window.onload = function () {
+
+    document.querySelector('#cells > div:nth-child(1) > div:nth-child(1)').classList.toggle('rat');
+
+    var coordinate = {
+      x: 0,
+      y: 0
+    };
+    
+    var rows = document.querySelectorAll('#cells .row');
+
+    rows.forEach(function (row, indexY) {
+      var box = row.querySelectorAll('div');
+      box.forEach(function (item, indexX) {
+        if (item.classList.contains('rat')) {
+          coordinate.x = indexX;
+          coordinate.y = indexY;
+        }
+      });
+    });
+
+    var moveTo = function (ev) {
+      switch (true) {
+        case (ev.keyCode === 38) && !document.querySelector('.rat').classList.contains('top'):
+          coordinate.y -= 1;
+          refresh();
+          break;
+        case (ev.keyCode === 39) && !document.querySelector('.rat').classList.contains('right'):
+          coordinate.x += 1;
+          refresh();
+          break;
+        case (ev.keyCode === 40) && !document.querySelector('.rat').classList.contains('bottom'):
+          coordinate.y += 1;
+          refresh();
+          break;
+        case (ev.keyCode === 37) && !document.querySelector('.rat').classList.contains('left'):
+          coordinate.x -= 1;
+          refresh();
+          break;
+        default:
+          break;
+      }
+    };
+
+    var refresh = function () {
+      if (coordinate.x < 0) {
+        coordinate.x = 0;
+      }
+      if (coordinate.x > 19) {
+        coordinate.x = 19;
+      }
+      console.log(coordinate);
+      document.querySelector('.rat').classList.toggle('rat');
+      rows[coordinate.y].querySelectorAll('div')[coordinate.x].classList.toggle('rat');
+    };
+
+    addEventListener('keydown', moveTo);
+  };
+</script>
   <div id="cells">
     <div class="row">
       <div class="top cell"></div>
